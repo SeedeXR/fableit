@@ -1,8 +1,11 @@
 # Fableit
 
+[![npm](https://img.shields.io/npm/v/fableit)](https://www.npmjs.com/package/fableit)
+[![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 Claude Fable 5's engineering process (retired 2026-07-07), packaged so **any
-model in any agent tool runs it** — the ponytail treatment for process instead
-of laziness.
+model in any agent tool runs it** — a community skill for Claude Code,
+OpenCode, and every agent that reads an instructions file.
 
 Published analysis found Fable 5's lead over older models is not raw
 intelligence on short tasks; it is learnable behavior: goal persistence,
@@ -23,11 +26,10 @@ condensed version of it in [`hooks/fableit-instructions.js`](hooks/fableit-instr
 Recommended — the installer wires everything (hooks, skill, statusline badge):
 
 ```bash
-# until the package is published to npm, install straight from GitHub:
-npx github:BernardMasika/fableit
-
-# after `npm publish`, simply:
 npx fableit
+
+# or straight from GitHub:
+npx github:SeedeXR/fableit
 ```
 
 This adds three hooks to `settings.json` in your Claude config dir
@@ -41,34 +43,33 @@ Windows). It never overwrites an existing statusline and refuses to touch a
 Alternative — plugin marketplace:
 
 ```
-/plugin marketplace add BernardMasika/fableit
+/plugin marketplace add SeedeXR/fableit
 /plugin install fableit@fableit
 ```
 
 Skill only (no hooks, load on demand with `/fableit`):
 
 ```bash
-git clone https://github.com/BernardMasika/fableit ~/.claude/skills/fableit
+git clone https://github.com/SeedeXR/fableit ~/.claude/skills/fableit
 ```
 
 Remove everything the installer added (hooks, skill, flag, OpenCode entry,
 installed copy — leaves your other settings untouched):
 
 ```bash
-npx github:BernardMasika/fableit uninstall
+npx fableit uninstall
 ```
 
 ### OpenCode
 
 ```bash
-npx github:BernardMasika/fableit opencode
+npx fableit opencode
 ```
 
 Wires the plugin into `~/.config/opencode/opencode.json` (pointing at the
-stable `~/.claude/fableit` copy). Or, once published to npm:
-`npm i -g fableit` and add `"plugin": ["fableit"]` to your opencode.json.
-The plugin appends the ruleset to every turn's system prompt and registers
-the `/fableit` command.
+stable `~/.claude/fableit` copy). Or: `npm i -g fableit` and add
+`"plugin": ["fableit"]` to your opencode.json. The plugin appends the
+ruleset to every turn's system prompt and registers the `/fableit` command.
 
 ### Other orchestration tools (Cursor, Codex CLI, Copilot, Gemini CLI, Windsurf, aider, ...)
 
@@ -76,10 +77,10 @@ Any tool that reads an instructions file can run fableit — append the ruleset
 to whatever file the tool loads:
 
 ```bash
-npx github:BernardMasika/fableit print >> AGENTS.md      # Codex, aider, many others
-npx github:BernardMasika/fableit print >> .cursorrules   # Cursor
-npx github:BernardMasika/fableit print >> GEMINI.md      # Gemini CLI
-npx github:BernardMasika/fableit print lite               # smaller variant, to stdout
+npx fableit print >> AGENTS.md      # Codex, aider, many others
+npx fableit print >> .cursorrules   # Cursor
+npx fableit print >> GEMINI.md      # Gemini CLI
+npx fableit print lite              # smaller variant, to stdout
 ```
 
 ## Levels
