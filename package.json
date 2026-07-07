@@ -2,7 +2,17 @@
   "name": "fableit",
   "version": "1.0.0",
   "description": "Fable 5's engineering process as a community skill for Claude Code, OpenCode, and any agent: grounding, zero hallucination, self-verification, goal persistence, orchestration, honest reporting.",
-  "keywords": ["fableit", "claude", "claude-code", "claude-skill", "opencode-plugin", "opencode", "agent", "skills", "grounding"],
+  "keywords": [
+    "fableit",
+    "claude",
+    "claude-code",
+    "claude-skill",
+    "opencode-plugin",
+    "opencode",
+    "agent",
+    "skills",
+    "grounding"
+  ],
   "license": "MIT",
   "author": {
     "name": "Alex Mkwizu"
@@ -16,7 +26,7 @@
     "url": "https://github.com/SeedeXR/fableit/issues"
   },
   "bin": {
-    "fableit": "./bin/fableit.js"
+    "fableit": "bin/fableit.js"
   },
   "main": "./.opencode/plugins/fableit.mjs",
   "exports": {
