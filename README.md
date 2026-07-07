@@ -3,27 +3,58 @@
 [![npm](https://img.shields.io/npm/v/fableit)](https://www.npmjs.com/package/fableit)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-Claude Fable 5's engineering process (retired 2026-07-07), packaged so **any
-model in any agent tool runs it** — a community skill for Claude Code,
-OpenCode, and every agent that reads an instructions file.
+**Fableit teaches your AI coding assistant to work like a careful senior
+engineer.** It is a small ruleset you install once. After that, the model
+checks facts before stating them, reads the code before changing it, verifies
+its own work before reporting, and tells you honestly what it did and did not
+do.
 
-Published analysis found Fable 5's lead over older models is not raw
-intelligence on short tasks; it is learnable behavior: goal persistence,
-killing incorrect beliefs, self-verification as a reflex, keeping looking
-before asking, effort allocation, and memory discipline (persistent memory
-improved Fable 3x more than Opus). Fableit injects those behaviors as an
-always-on ruleset: **ground → comprehend → reason → design → execute →
-verify → report.**
+It packages the engineering process of Claude Fable 5 (retired 2026-07-07) so
+that **any model in any agent tool can run it**: Claude Code, OpenCode,
+Cursor, Codex CLI, Gemini CLI, aider, and anything else that reads an
+instructions file.
 
-The full blueprint lives in [`SKILL.md`](SKILL.md); the injected ruleset is a
-condensed version of it in [`hooks/fableit-instructions.js`](hooks/fableit-instructions.js)
-— one source of truth for every host.
+## Where this comes from
+
+Published analysis found that Fable 5's lead over older models was not raw
+intelligence on short tasks. It was learnable behavior:
+
+- **Goal persistence**: after every error or detour, re-anchor on the original
+  goal instead of drifting.
+- **Killing incorrect beliefs**: treat your current theory as a hypothesis and
+  drop it the moment evidence contradicts it.
+- **Self-verification as a reflex**: test your own work before presenting it.
+- **Keeping looking before asking**: exhaust what you can find yourself before
+  interrupting the human with a question.
+- **Effort allocation**: think hard on the genuinely hard parts, move fast
+  through the mechanical parts.
+- **Memory discipline**: with persistent memory, Fable improved 3x more than
+  Opus.
+
+Fableit injects those behaviors as an always-on ruleset:
+**ground → comprehend → reason → design → execute → verify → report.**
+In plain terms: check the facts, read the code, think, plan, do the work,
+test it, then report honestly.
+
+## How it works
+
+Two files matter, and they say the same thing at different sizes:
+
+- [`SKILL.md`](SKILL.md) is the full blueprint, written for the model to read
+  when it needs the complete process.
+- [`hooks/fableit-instructions.js`](hooks/fableit-instructions.js) holds the
+  condensed ruleset that gets injected into every session. One source of
+  truth for every host.
+
+Once installed, the ruleset is added to the model's instructions
+automatically at the start of every session. You never have to remember to
+turn it on.
 
 ## Install
 
 ### Claude Code
 
-Recommended — the installer wires everything (hooks, skill, statusline badge):
+Recommended: the installer wires everything (hooks, skill, statusline badge).
 
 ```bash
 npx fableit
@@ -32,15 +63,21 @@ npx fableit
 npx github:SeedeXR/fableit
 ```
 
-This adds three hooks to `settings.json` in your Claude config dir
-(SessionStart injects the ruleset, SubagentStart makes sub-agents follow it
-too, UserPromptSubmit tracks level switches), installs the `fableit` skill,
-copies the package to `~/.claude/fableit`, and — if you have no statusline —
-adds a `[FABLEIT]` / `[FABLEIT:ULTRA]` badge (bash script, skipped on
-Windows). It never overwrites an existing statusline and refuses to touch a
+What the installer does, step by step:
+
+- Adds three hooks to `settings.json` in your Claude config dir:
+  - **SessionStart** injects the ruleset when a session begins,
+  - **SubagentStart** makes sub-agents follow the same rules,
+  - **UserPromptSubmit** tracks level switches like `/fableit ultra`.
+- Installs the `fableit` skill and copies the package to `~/.claude/fableit`.
+- If you have no statusline, adds a `[FABLEIT]` / `[FABLEIT:ULTRA]` badge so
+  you can see at a glance that it is active (a bash script, skipped on
+  Windows).
+
+It never overwrites an existing statusline, and it refuses to touch a
 `settings.json` it cannot parse. Restart Claude Code or `/clear` to activate.
 
-Alternative — plugin marketplace:
+Alternative: install through the plugin marketplace.
 
 ```
 /plugin marketplace add SeedeXR/fableit
@@ -53,8 +90,8 @@ Skill only (no hooks, load on demand with `/fableit`):
 git clone https://github.com/SeedeXR/fableit ~/.claude/skills/fableit
 ```
 
-Remove everything the installer added (hooks, skill, flag, OpenCode entry,
-installed copy — leaves your other settings untouched):
+To remove everything the installer added (hooks, skill, flag, OpenCode entry,
+installed copy), while leaving your other settings untouched:
 
 ```bash
 npx fableit uninstall
@@ -66,15 +103,15 @@ npx fableit uninstall
 npx fableit opencode
 ```
 
-Wires the plugin into `~/.config/opencode/opencode.json` (pointing at the
-stable `~/.claude/fableit` copy). Or: `npm i -g fableit` and add
+This wires the plugin into `~/.config/opencode/opencode.json`, pointing at
+the stable `~/.claude/fableit` copy. Or: `npm i -g fableit` and add
 `"plugin": ["fableit"]` to your opencode.json. The plugin appends the
 ruleset to every turn's system prompt and registers the `/fableit` command.
 
-### Other orchestration tools (Cursor, Codex CLI, Copilot, Gemini CLI, Windsurf, aider, ...)
+### Other tools (Cursor, Codex CLI, Copilot, Gemini CLI, Windsurf, aider, ...)
 
-Any tool that reads an instructions file can run fableit — append the ruleset
-to whatever file the tool loads:
+Any tool that reads an instructions file can run fableit: append the ruleset
+to whatever file your tool loads.
 
 ```bash
 npx fableit print >> AGENTS.md      # Codex, aider, many others
@@ -85,21 +122,29 @@ npx fableit print lite              # smaller variant, to stdout
 
 ## Levels
 
+Fableit ships three intensity levels. Each level includes everything from
+the one before it and adds more.
+
 | Level | Adds |
 |-------|------|
 | `lite` | Grounding/zero-hallucination protocol, comprehension-first, the solution ladder, root-cause debugging, verify-before-report, honest reporting. |
 | `full` (default) | + goal persistence, effort allocation & sub-agent orchestration, deciding vs asking, session rhythm & memory discipline. |
 | `ultra` | + a mandatory verification gate: every claim in the final report must trace to observed evidence, and reports end with a "Verified:" list. |
 
+Which one to pick: `lite` is the core discipline and the cheapest in tokens.
+`full`, the default, adds the behaviors that matter on long tasks. `ultra`
+adds a strict "no evidence, no claim" gate, built for models that tend to
+guess confidently.
+
 Switch anytime with `/fableit lite|full|ultra|off` (both Claude Code and
-OpenCode); turn off with `stop fableit` or `normal mode`. All states —
-including off — persist until changed. Set the default level with the
+OpenCode). Turn it off with `stop fableit` or `normal mode`. All states,
+including off, persist until changed. Set the default level with the
 `FABLEIT_DEFAULT_MODE` env var or `~/.config/fableit/config.json`
 (`{"defaultMode": "ultra"}`).
 
 ## Why it helps older models
 
-The behaviors above are process, not parameters — a model that re-anchors on
+The behaviors above are process, not parameters. A model that re-anchors on
 the goal after every error, refuses to state unobserved facts, and runs a
 verification gate before reporting closes most of the gap this ruleset was
 distilled from. The `ultra` gate exists precisely for models that hallucinate
