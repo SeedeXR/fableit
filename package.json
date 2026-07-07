@@ -1,5 +1,5 @@
 {
-  "name": "fableit",
+  "name": "@seedexr/fableit",
   "version": "1.0.0",
   "description": "Fable 5's engineering process as a community skill for Claude Code, OpenCode, and any agent: grounding, zero hallucination, self-verification, goal persistence, orchestration, honest reporting.",
   "keywords": [
@@ -42,7 +42,8 @@
     "opencode.json"
   ],
   "scripts": {
-    "test": "node --test tests/*.test.js"
+    "test": "node --test tests/*.test.js",
+    "publish:both": "npm publish && npm pkg set name=fableit && npm publish && npm pkg set name=@seedexr/fableit"
   },
   "publishConfig": {
     "access": "public"

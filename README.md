@@ -52,6 +52,12 @@ turn it on.
 
 ## Install
 
+Fableit is published on npm under two names with identical contents:
+[`@seedexr/fableit`](https://www.npmjs.com/package/@seedexr/fableit), the
+canonical package owned by the [SeedeXR](https://github.com/SeedeXR)
+organization, and [`fableit`](https://www.npmjs.com/package/fableit), the
+short name used in the commands below. Install whichever you prefer.
+
 ### Claude Code
 
 Recommended: the installer wires everything (hooks, skill, statusline badge).
