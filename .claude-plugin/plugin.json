@@ -1,0 +1,10 @@
+{
+  "name": "fableit",
+  "version": "1.0.0",
+  "description": "Fable 5's engineering process for any model: grounding, zero hallucination, comprehension before action, root-cause fixes, self-verification, goal persistence, honest reporting.",
+  "author": {
+    "name": "Alex Mkwizu",
+    "url": "https://github.com/BernardMasika/fableit"
+  },
+  "hooks": "./hooks/hooks.json"
+}

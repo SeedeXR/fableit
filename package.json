@@ -1,0 +1,40 @@
+{
+  "name": "fableit",
+  "version": "1.0.0",
+  "description": "Fable 5's engineering process for any model: grounding, zero hallucination, self-verification, goal persistence, orchestration, honest reporting.",
+  "keywords": ["fableit", "claude-code", "opencode-plugin", "opencode", "agent", "skills", "grounding"],
+  "license": "MIT",
+  "author": {
+    "name": "Alex Mkwizu"
+  },
+  "homepage": "https://github.com/BernardMasika/fableit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BernardMasika/fableit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/BernardMasika/fableit/issues"
+  },
+  "bin": {
+    "fableit": "./bin/fableit.js"
+  },
+  "main": "./.opencode/plugins/fableit.mjs",
+  "exports": {
+    ".": "./.opencode/plugins/fableit.mjs"
+  },
+  "files": [
+    "SKILL.md",
+    "bin/",
+    "hooks/",
+    "commands/",
+    ".claude-plugin/",
+    ".opencode/",
+    "opencode.json"
+  ],
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
