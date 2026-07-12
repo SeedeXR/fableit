@@ -23,8 +23,9 @@ const OPENCODE_CONFIG = path.join(getOpencodeDir(), 'opencode.json');
 
 // An entry/value is ours iff it references the installed copy — never match by
 // the bare substring 'fableit', which could appear in a user's own paths.
-const ownMarker = path.join(DEST, path.sep === '\\' ? 'hooks\\' : 'hooks/');
-const isOurs = v => JSON.stringify(v).includes(JSON.stringify(ownMarker).slice(1, -1));
+const norm = s => String(s).replace(/[\\/]+/g, '/');
+const ownMarker = norm(path.join(DEST, 'hooks')) + '/';
+const isOurs = v => norm(JSON.stringify(v)).includes(ownMarker);
 
 function fatal(msg) {
   console.error('fableit: ' + msg);
@@ -73,9 +74,11 @@ function hookEntries() {
       const entry = {
         hooks: hooks.map(h => ({
           type: h.type,
-          command: (process.platform === 'win32' && h.commandWindows
-            ? h.commandWindows.replace(/\$env:CLAUDE_PLUGIN_ROOT/g, DEST)
-            : h.command.replace(/\$\{CLAUDE_PLUGIN_ROOT\}/g, DEST)),
+          // hooks.json is the single source of truth and its `command` is bash;
+          // Claude Code runs every hook through bash (Git Bash on Windows), so
+          // substitute the plugin-root placeholder and normalise to '/'. node
+          // accepts forward slashes on Windows, keeping the command valid bash.
+          command: h.command.replace(/\$\{CLAUDE_PLUGIN_ROOT\}/g, norm(DEST)),
           timeout: h.timeout,
         })),
       };
@@ -84,6 +87,25 @@ function hookEntries() {
     });
   }
   return entries;
+}
+
+// Reconcile our hooks within a settings object: drop any previous fableit
+// entries (including a stale or broken one written by an older version) and
+// add the current correct ones. Makes re-running install idempotent and
+// self-healing, so a user never has to hand-remove a bad entry.
+function reconcileClaudeHooks(settings, desired) {
+  settings.hooks = settings.hooks || {};
+  for (const [event, entries] of Object.entries(desired)) {
+    const kept = (settings.hooks[event] || []).filter(e => !isOurs(e));
+    settings.hooks[event] = [...kept, ...entries];
+  }
+  // Also strip our entries from events we no longer register.
+  for (const event of Object.keys(settings.hooks)) {
+    if (desired[event]) continue;
+    settings.hooks[event] = settings.hooks[event].filter(e => !isOurs(e));
+    if (!settings.hooks[event].length) delete settings.hooks[event];
+  }
+  return settings;
 }
 
 function installClaude() {
@@ -97,11 +119,7 @@ function installClaude() {
   fs.copyFileSync(path.join(SRC, 'SKILL.md'), path.join(SKILLS_DIR, 'fableit', 'SKILL.md'));
 
   const settings = readConfigOrDie(SETTINGS, 'Claude settings');
-  settings.hooks = settings.hooks || {};
-  for (const [event, entries] of Object.entries(hookEntries())) {
-    const list = (settings.hooks[event] = settings.hooks[event] || []);
-    if (!list.some(isOurs)) list.push(...entries);
-  }
+  reconcileClaudeHooks(settings, hookEntries());
   // Statusline badge — only if the user has none; never clobber an existing one.
   if (!settings.statusLine && process.platform !== 'win32') {
     settings.statusLine = {
@@ -159,18 +177,23 @@ function uninstall() {
   console.log('fableit uninstalled (Claude Code hooks, skill, flag, OpenCode entry, installed copy).');
 }
 
-const cmd = process.argv[2] || 'claude';
-switch (cmd) {
-  case 'claude':
-  case 'install':
-    installClaude(); break;
-  case 'opencode':
-    installOpencode(); break;
-  case 'print':
-    console.log(getFableitInstructions(process.argv[3] || 'full')); break;
-  case 'uninstall':
-    uninstall(); break;
-  default:
-    console.log('usage: npx fableit [claude|opencode|print [lite|full|ultra]|uninstall]');
-    process.exit(1);
+if (require.main === module) {
+  const cmd = process.argv[2] || 'claude';
+  switch (cmd) {
+    case 'claude':
+    case 'install':
+      installClaude(); break;
+    case 'opencode':
+      installOpencode(); break;
+    case 'print':
+      console.log(getFableitInstructions(process.argv[3] || 'full')); break;
+    case 'uninstall':
+      uninstall(); break;
+    default:
+      console.log('usage: npx fableit [claude|opencode|print [lite|full|ultra]|uninstall]');
+      process.exit(1);
+  }
 }
+
+// Exported for tests; the CLI above only runs when the file is executed directly.
+module.exports = { hookEntries, reconcileClaudeHooks, isOurs };
