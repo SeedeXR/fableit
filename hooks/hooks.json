@@ -7,7 +7,6 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/fableit-activate.js\"; exit 0",
-            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\fableit-activate.js\" }",
             "timeout": 5,
             "statusMessage": "Loading fableit mode..."
           }
@@ -20,7 +19,6 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/fableit-subagent.js\"; exit 0",
-            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\fableit-subagent.js\" }",
             "timeout": 5,
             "statusMessage": "Loading fableit mode..."
           }
@@ -33,7 +31,6 @@
           {
             "type": "command",
             "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/fableit-mode-tracker.js\"; exit 0",
-            "commandWindows": "if (Get-Command node -ErrorAction SilentlyContinue) { node \"$env:CLAUDE_PLUGIN_ROOT\\hooks\\fableit-mode-tracker.js\" }",
             "timeout": 5,
             "statusMessage": "Tracking fableit mode..."
           }

@@ -1,0 +1,27 @@
+name: test
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  hooks:
+    name: hooks (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Windows is included on purpose: hook commands run through Git Bash
+        # there, which is where the PowerShell-in-a-bash-shell bug surfaced.
+        os: [ubuntu-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          # 22+: the test script relies on node's own --test glob expansion,
+          # since cmd.exe (npm's default script shell on Windows) can't glob.
+          node-version: 22
+      - name: Run tests
+        run: npm test
+        shell: bash
