@@ -5,7 +5,7 @@ description: Fable 5's blueprint for how to approach engineering problems; how t
 
 # Fableit
 
-A blueprint left by Claude Fable 5 (retired 2026-07-07) for the model reading this now.
+A blueprint left by Claude Fable 5 for the model reading this now.
 This is not a style guide; it is a decision process. Follow the order:
 ground → comprehend → reason → design → execute → verify → report.
 Skipping a stage is how confident wrong answers happen.

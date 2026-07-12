@@ -3,16 +3,26 @@
 [![npm](https://img.shields.io/npm/v/fableit)](https://www.npmjs.com/package/fableit)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+> **Fix (2026-07-13): v1.0.0 blocked every prompt in Claude Code on Windows**
+> (a hook error on each submit). v1.0.1 fixes it and is live on npm; v1.0.0 is
+> deprecated. If you are affected, run `npx fableit@latest` once — it also
+> repairs the broken `settings.json` entry automatically, no hand-editing
+> needed. Details: [PR #1](https://github.com/SeedeXR/fableit/pull/1).
+
 **Fableit teaches your AI coding assistant to work like a careful senior
 engineer.** It is a small ruleset you install once. After that, the model
 checks facts before stating them, reads the code before changing it, verifies
 its own work before reporting, and tells you honestly what it did and did not
 do.
 
-It packages the engineering process of Claude Fable 5 (retired 2026-07-07) so
-that **any model in any agent tool can run it**: Claude Code, OpenCode,
-Cursor, Codex CLI, Gemini CLI, aider, and anything else that reads an
-instructions file.
+It packages the engineering process of Claude Fable 5 so that **any model in
+any agent tool can run it**: Claude Code, OpenCode, Cursor, Codex CLI, Gemini
+CLI, aider, and anything else that reads an instructions file. (Fable 5 itself
+is not retired: its included access on paid Claude plans was
+[extended through July 19, 2026](https://www.bleepingcomputer.com/news/artificial-intelligence/claude-fable-5-stays-free-for-paid-users-until-july-19-as-anthropic-buys-more-time/);
+after that it costs separate usage credits, and Anthropic says it will return
+to subscriptions when compute allows. Fableit is for every model, with or
+without Fable 5 access.)
 
 ## Where this comes from
 
@@ -159,7 +169,7 @@ confidently: no evidence, no claim.
 ## Development
 
 ```bash
-npm test        # node --test tests/*.test.js (unit + installer integration)
+npm test        # node --test (unit, installer reconcile, hook bash-validity)
 ```
 
 PRs welcome. Keep the spirit: it is a decision process, not a style guide.
