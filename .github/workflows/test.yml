@@ -19,7 +19,9 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          # 22+: the test script relies on node's own --test glob expansion,
+          # since cmd.exe (npm's default script shell on Windows) can't glob.
+          node-version: 22
       - name: Run tests
         run: npm test
         shell: bash
