@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 // fableit — npx installer / CLI.
 //
-//   npx fableit              install for Claude Code (hooks + skill + statusline)
-//   npx fableit opencode     wire the plugin into ~/.config/opencode/opencode.json
-//   npx fableit print [lvl]  dump the ruleset (pipe into AGENTS.md/.cursorrules for any other tool)
-//   npx fableit uninstall    remove hooks, skill, flag, opencode entry, installed copy
+//   npx @seedexr/fableit              install for Claude Code (hooks + skill + statusline)
+//   npx @seedexr/fableit opencode     wire the plugin into ~/.config/opencode/opencode.json
+//   npx @seedexr/fableit print [lvl]  dump the ruleset (pipe into AGENTS.md/.cursorrules for any other tool)
+//   npx @seedexr/fableit uninstall    remove hooks, skill, flag, opencode entry, installed copy
 
 'use strict';
 
@@ -190,7 +190,7 @@ if (require.main === module) {
     case 'uninstall':
       uninstall(); break;
     default:
-      console.log('usage: npx fableit [claude|opencode|print [lite|full|ultra]|uninstall]');
+      console.log('usage: npx @seedexr/fableit [claude|opencode|print [lite|full|ultra]|uninstall]');
       process.exit(1);
   }
 }

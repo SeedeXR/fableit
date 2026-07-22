@@ -1,11 +1,11 @@
 # Fableit
 
-[![npm](https://img.shields.io/npm/v/fableit)](https://www.npmjs.com/package/fableit)
+[![npm](https://img.shields.io/npm/v/@seedexr/fableit)](https://www.npmjs.com/package/@seedexr/fableit)
 [![license: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 > **Fix (2026-07-13): v1.0.0 blocked every prompt in Claude Code on Windows**
 > (a hook error on each submit). v1.0.1 fixes it and is live on npm; v1.0.0 is
-> deprecated. If you are affected, run `npx fableit@latest` once — it also
+> deprecated. If you are affected, run `npx @seedexr/fableit@latest` once — it also
 > repairs the broken `settings.json` entry automatically, no hand-editing
 > needed. Details: [PR #1](https://github.com/SeedeXR/fableit/pull/1).
 
@@ -62,18 +62,18 @@ turn it on.
 
 ## Install
 
-Fableit is published on npm under two names with identical contents:
-[`@seedexr/fableit`](https://www.npmjs.com/package/@seedexr/fableit), the
-canonical package owned by the [SeedeXR](https://github.com/SeedeXR)
-organization, and [`fableit`](https://www.npmjs.com/package/fableit), the
-short name used in the commands below. Install whichever you prefer.
+Fableit is published on npm as
+[`@seedexr/fableit`](https://www.npmjs.com/package/@seedexr/fableit), owned by
+the [SeedeXR](https://github.com/SeedeXR) organization. (It was previously also
+published under the short name `fableit`; that name is now **deprecated** and
+frozen — use `@seedexr/fableit`. Existing `fableit` installs keep working.)
 
 ### Claude Code
 
 Recommended: the installer wires everything (hooks, skill, statusline badge).
 
 ```bash
-npx fableit
+npx @seedexr/fableit
 
 # or straight from GitHub:
 npx github:SeedeXR/fableit
@@ -110,18 +110,18 @@ To remove everything the installer added (hooks, skill, flag, OpenCode entry,
 installed copy), while leaving your other settings untouched:
 
 ```bash
-npx fableit uninstall
+npx @seedexr/fableit uninstall
 ```
 
 ### OpenCode
 
 ```bash
-npx fableit opencode
+npx @seedexr/fableit opencode
 ```
 
 This wires the plugin into `~/.config/opencode/opencode.json`, pointing at
-the stable `~/.claude/fableit` copy. Or: `npm i -g fableit` and add
-`"plugin": ["fableit"]` to your opencode.json. The plugin appends the
+the stable `~/.claude/fableit` copy. Or: `npm i -g @seedexr/fableit` and add
+`"plugin": ["@seedexr/fableit"]` to your opencode.json. The plugin appends the
 ruleset to every turn's system prompt and registers the `/fableit` command.
 
 ### Other tools (Cursor, Codex CLI, Copilot, Gemini CLI, Windsurf, aider, ...)
@@ -130,10 +130,10 @@ Any tool that reads an instructions file can run fableit: append the ruleset
 to whatever file your tool loads.
 
 ```bash
-npx fableit print >> AGENTS.md      # Codex, aider, many others
-npx fableit print >> .cursorrules   # Cursor
-npx fableit print >> GEMINI.md      # Gemini CLI
-npx fableit print lite              # smaller variant, to stdout
+npx @seedexr/fableit print >> AGENTS.md      # Codex, aider, many others
+npx @seedexr/fableit print >> .cursorrules   # Cursor
+npx @seedexr/fableit print >> GEMINI.md      # Gemini CLI
+npx @seedexr/fableit print lite              # smaller variant, to stdout
 ```
 
 ## Levels
